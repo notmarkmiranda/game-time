@@ -30,7 +30,7 @@ const realMap = [
 ];
 
 describe('Map', function() {
-  context('with default attributes', function() {
+  context('with realMap passed in', function() {
     let map = new Map({
       ctx: this.ctx,
       width: realMap[0].length,
