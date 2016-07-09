@@ -1,8 +1,6 @@
-const Map = require('./map');
-const Player = require('./player');
+const assert = require('chai').assert;
 
-const canvas = document.getElementById("main-canvas");
-const ctx = canvas.getContext('2d');
+const Map = require('../lib/map');
 
 const realMap = [
 	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
@@ -15,7 +13,7 @@ const realMap = [
   [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
   [1,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
   [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
-  [1,0,0,0,0,0,-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
+  [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
   [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
   [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
   [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1],
@@ -31,50 +29,34 @@ const realMap = [
 	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 ];
 
-var map = new Map({
-  ctx: ctx,
-  width: realMap[0].length,
-  height: realMap.length,
-  grid: realMap
-})
+describe('Map', function() {
+  context('with realMap passed in', function() {
+    let map = new Map({
+      ctx: this.ctx,
+      width: realMap[0].length,
+      height: realMap.length,
+      grid: realMap
+    });
 
-var player = new Player(ctx);
+    it('should be comprised of block objects', function() {
+      assert.equal(map.grid[0][0].constructor.name, "Block");
+      assert.equal(map.grid[1][0].constructor.name, "Block");
+      assert.equal(map.grid[0][1].constructor.name, "Block");
 
-var scale = 8;
+      assert.equal(map.grid[map.height - 1][map.width - 1].constructor.name, "Block");
+      assert.equal(map.grid[map.height - 2][map.width - 1].constructor.name, "Block");
+      assert.equal(map.grid[map.height - 1][map.width - 2].constructor.name, "Block");
+    });
 
-var init = function() {
-	bindKeys();
-	gameLoop();
-}
+    it('should have outer walls', function() {
+      assert.equal(map.grid[0][0].type, 1);
+      assert.equal(map.grid[1][0].type, 1);
+      assert.equal(map.grid[0][1].type, 1);
 
-var bindKeys = function() {
-  // custom onkeydown parser <- returns true only for keydown on 37-40
-  document.onkeydown = function(e) {
-    if (e.keyCode === 38) { player.speed = 1 };
-    if (e.keyCode === 40) { player.speed = -1 };
-    if (e.keyCode === 37) { player.direction = -1 };
-    if (e.keyCode === 39) { player.direction = 1 };
-  }
+      assert.equal(map.grid[map.height - 1][map.width - 1].type, 1);
+      assert.equal(map.grid[map.height - 2][map.width - 1].type, 1);
+      assert.equal(map.grid[map.height - 1][map.width - 2].type, 1);
+    });
 
-  document.onkeyup = function(e) {
-    if (e.keyCode === 38 || e.keyCode === 40) { player.speed = 0 };
-    if (e.keyCode === 37 || e.keyCode === 39) { player.direction = 0 };
-  }
-}
-
-var gameLoop = function() {
-  console.log("Points: " + player.pillCount);
-
-  drawMap();
-  setTimeout(gameLoop, 1000 / 30);
-}
-
-var drawMap = function() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  map.drawWalls();
-
-  player.update(map);
-}
-
-setTimeout(init, 1);
+  });
+});
