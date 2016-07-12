@@ -1,5 +1,6 @@
 const assert = require('chai').assert;
 
+const Ghost = require('../lib/ghost');
 const Map = require('../lib/map');
 
 const realMap = [
@@ -29,37 +30,36 @@ const realMap = [
 	[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 ];
 
-describe('Map', function() {
-  context('with realMap passed in', function() {
+describe('Ghost', function(){
+  context('with default attributes', function(){
     let map = new Map({
       ctx: this.ctx,
       width: realMap[0].length,
       height: realMap.length,
       grid: realMap
     });
-
-    it('should be comprised of block objects', function() {
-      assert.equal(map.grid[0][0].constructor.name, "Block");
-      assert.equal(map.grid[1][0].constructor.name, "Block");
-      assert.equal(map.grid[0][1].constructor.name, "Block");
-
-      assert.equal(map.grid[map.height - 1][map.width - 1].constructor.name, "Block");
-      assert.equal(map.grid[map.height - 2][map.width - 1].constructor.name, "Block");
-      assert.equal(map.grid[map.height - 1][map.width - 2].constructor.name, "Block");
+    let ghost = new Ghost({
+      ctx: this.ctx,
+      map: map
     });
 
-    it('should have outer walls', function() {
-      assert.equal(map.grid[0][0].type, 1);
-      assert.equal(map.grid[1][0].type, 1);
-      assert.equal(map.grid[0][1].type, 1);
-
-      assert.equal(map.grid[map.height - 1][map.width - 1].type, 1);
-      assert.equal(map.grid[map.height - 2][map.width - 1].type, 1);
-      assert.equal(map.grid[map.height - 1][map.width - 2].type, 1);
+    it('should have default attributes', function(){
+      assert.isAbove(ghost.x, 0)
+      assert.isAbove(ghost.y, 0)
     });
 
-		it('should marks first test', function() {
-		});
+    it('should chase a player', function(){
+      let originX = ghost.x
+      let originY = ghost.y
+      ghost.chasePlayer(10, 10)
+      assert.notEqual(ghost.x, originX)
+      assert.notEqual(ghost.x, originX)
+    });
+
+    it('should be drawn', function(){
+      eval(require('locus'));
+      ghost.draw();
+    });
 
   });
 });
