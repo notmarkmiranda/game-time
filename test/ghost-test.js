@@ -56,9 +56,10 @@ describe('Ghost', function(){
       assert.notEqual(ghost.x, originX)
     });
 
-    it('should be drawn', function(){
-      eval(require('locus'));
-      ghost.draw();
+    it('should be random relocate', function(){
+			eval(require('locus'));
+      // ghost.draw();
+
     });
 
   });
