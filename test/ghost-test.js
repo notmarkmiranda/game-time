@@ -53,13 +53,15 @@ describe('Ghost', function(){
       let originY = ghost.y
       ghost.chasePlayer(10, 10)
       assert.notEqual(ghost.x, originX)
-      assert.notEqual(ghost.x, originX)
+      assert.notEqual(ghost.y, originY)
     });
 
-    it('should be random relocate', function(){
-			eval(require('locus'));
-      // ghost.draw();
+    it('should be able to block check with type 1', function(){
+			assert.equal(ghost.blockCheck(0, 0, map).type, 1)
+    });
 
+    it('should be able to block check with type 0', function(){
+			assert.equal(ghost.blockCheck(10, 10, map).type, 0)
     });
 
   });
