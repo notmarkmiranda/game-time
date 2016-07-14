@@ -62,14 +62,6 @@ describe('Ghost', function(){
       assert.notEqual(ghost.y, originY)
     });
 
-    it('should be able to block check with type 1', function(){
-			assert.equal(ghost.blockCheck(0, 0, map).type, 1)
-    });
-
-    it('should be able to block check with type 0', function(){
-			assert.equal(ghost.blockCheck(10, 10, map).type, 0)
-    });
-
 		it('should be able to calculate the amounts to add to move towards position/player', function(){
 			ghost.x = 0;
 			ghost.y = 0;
