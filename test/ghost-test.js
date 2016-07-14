@@ -94,5 +94,15 @@ describe('Ghost', function(){
 			assert.notEqual(ghost.y, originY);
 		});
 
+		it('should be able to confirm a collision', function(){
+			player.pillCount = 1
+			assert.equal(player.pillCount, 1);
+			player.x = 0;
+			player.y = 0;
+			ghost.x = 0;
+			ghost.y = 0;
+			assert.notEqual(player.pillCount, 0)
+		})
+
   });
 });
